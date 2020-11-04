@@ -1,13 +1,44 @@
-import React, {Component} from 'react';
+ import React, {Component} from 'react';
 import { Table } from 'reactstrap';
+import {Link } from 'react-router-dom';
 import './App.css';
-
+import {DebounceInput} from 'react-debounce-input';
 class Customers extends Component {
+  constructor() {
+    super()
+    this.state ={
+      value: '',
+      searchOpt: 'name'
+    }
+  }
 
-  render(){
-    const {customers} = this.props;
+  onChange = (e) => {
+    this.setState({ value: e.target.value })
+    console.log('Searched');
+  }
+onOptionChange = (e) => {
+    this.setState({searchOpt: e.target.value})
+  }
+  render() {
+    const { customers } = this.props;
+    const { value , searchOpt} = this.state;
+    const filteredCustomers = customers.filter(eachCst=> {
+      return eachCst.[searchOpt].toLowerCase().includes(value.toLowerCase());
+    }) 
     return (
       <div>
+        <DebounceInput
+          minLength={2}
+          onChange={this.onChange}
+          debounceTimeout={600}
+          />
+        <input onChange={this.onChange} />
+        <select onChange = {this.onOptionChange}>
+          <option value = 'name' >Name</option>
+          <option value = 'email' >Email</option>
+          <option value = 'githu' >GitHub</option>
+          <option value = 'id' >#Id</option>
+        </select>
         <Table striped className="customers">
           <thead>
             <tr>
@@ -26,14 +57,14 @@ class Customers extends Component {
           </thead>
           <tbody>
             {
-              customers.map(customer=>{
+              filteredCustomers.map(customer=>{
                 const { id, name, lastName, avatar, email, state, phone,
-                role, github, courses, payment, status } = customer;
+                role, github, courses, payment } = customer;
                 return (
                 <tr>
                   <th scope="row">{id}</th>
-                  <td><img src={avatar} /></td>
-                  <td> <a href="/customer/1">{name} {lastName}</a> </td>
+                  <td><img src={avatar} alt='Avatar'/></td>
+                  <td> <Link to={`/customer/${id}`}>{name} {lastName}</Link></td>
                   <td>{state}</td>
                   <td>{email}</td>
                   <td>{phone}</td>
@@ -46,76 +77,10 @@ class Customers extends Component {
                 )
               })
             }
-            
           </tbody>
         </Table>
       </div>
     )
   }
 }
-
-
-
-
 export default Customers;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-const data = [
-  {countryName: "USA", currency:"dollar", products:[
-    {name: "apple", active:true, subProducts:[
-      {name: "iPhone", price: 40, sold:4},
-      {name: "iPad", price: 530, sold:4},
-      {name: "watch", price: 530},
-    ]}
-  ]},
-  {countryName: "Russia", currency:"rubl", products:[
-    {name: "apple", active:true, subProducts:[
-      {name: "iPhone", price: 40, sold:4},
-      {name: "iPad", price: 530, sold:4},
-      {name: "watch", price: 530},
-    ]}
-  ]}
-]
-*/
