@@ -9,3 +9,10 @@
     width: 50px;
     border-radius: 50px;
 }
+
+button{
+    padding: 3px;
+}
+img{
+    width: 80px;
+}

@@ -27,12 +27,12 @@ onOptionChange = (e) => {
     }) 
     return (
       <div>
-        <DebounceInput
+        <DebounceInput placeholder = 'Debounce'
           minLength={2}
           onChange={this.onChange}
           debounceTimeout={600}
           />
-        <input onChange={this.onChange} />
+        <input placeholder = 'regular search' onChange={this.onChange} />
         <select onChange = {this.onOptionChange}>
           <option value = 'name' >Name</option>
           <option value = 'email' >Email</option>
